@@ -8,20 +8,35 @@ Description:    This program implements a function that replaces the adjacent lo
 
 from typing import List
 
+# board = [
+#     "......................",
+#     "......##########......",
+#     "......#........#......",
+#     "......#........#......",
+#     "......#........#####..",
+#     "....###............#..",
+#     "....#............###..",
+#     "....##############....",
+# ]
+
 board = [
-    "......................",
-    "......##########......",
+    "........######........",
+    "......##......##......",
     "......#........#......",
-    "......#........#......",
+    ".....#.........#......",
     "......#........#####..",
-    "....###............#..",
-    "....#............###..",
-    "....##############....",
+    ".....#.............#..",
+    "......#...........#...",
+    ".......#.........#....",
+    "........###....##.....",
+    "...........####.......",
 ]
 
 # convert each row of immutable string to list of strings
 board = [[ele for ele in row] for row in board]
 
+# sanity check
+assert all(len(row) == len(board[0]) for row in board), f"The board should have lines of equal length."
 
 def flood_fill(input_board: List[str], old: str, new: str, x: int, y: int) -> List[str]:
     """Returns board with old values replaced with new values
@@ -36,10 +51,13 @@ def flood_fill(input_board: List[str], old: str, new: str, x: int, y: int) -> Li
         List[str]: Modified board
     """
 
+    # validity check
     x_max, y_max = len(input_board) - 1, len(input_board[0]) - 1
+    if x < 0 or y < 0 or x > x_max or y> y_max: return
+
     current = input_board[x][y]
 
-    if x < 0 or x > x_max or y < 0 or y > y_max or current != old or current == new:
+    if current != old or current == new:
         # validity check
         return
     else:
@@ -58,13 +76,3 @@ modified_board = flood_fill(input_board=board, old=".", new="~", x=5, y=12)
 
 for a in modified_board:
     print(a)
-
-# Expected output:
-# ......................
-# ......##########......
-# ......#~~~~~~~~#......
-# ......#~~~~~~~~#......
-# ......#~~~~~~~~#####..
-# ....###~~~~~~~~~~~~#..
-# ....#~~~~~~~~~~~~###..
-# ....##############....
